@@ -175,6 +175,20 @@
       footer { flex-direction: column; gap: 1rem; text-align: center; }
     }
     @media (max-width: 560px) { .portfolio-grid { columns: 1; } }
+
+    /* Experience */
+    .experience { border-top: 1px solid var(--light-line); background: linear-gradient(180deg, var(--cloud) 0%, var(--mist) 100%); }
+    .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 4rem; }
+    .exp-card { background: white; border: 1px solid var(--light-line); padding: 2rem; transition: border-color .3s, box-shadow .3s; }
+    .exp-card:hover { border-color: var(--accent-light); box-shadow: 0 8px 30px rgba(100,140,180,.1); }
+    .exp-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; color: var(--ink); margin-bottom: .4rem; }
+    .exp-sub { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .78rem; color: var(--accent); letter-spacing: .08em; margin-bottom: 1.2rem; }
+    .exp-list { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+    .exp-list li { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .85rem; color: var(--soft-ink); line-height: 1.8; padding-left: 1.1rem; position: relative; }
+    .exp-list li::before { content: '·'; position: absolute; left: 0; color: var(--accent); font-size: 1.2rem; line-height: 1.4; }
+    .exp-closing { border-top: 1px solid var(--light-line); padding-top: 3rem; }
+    .exp-closing p { font-family: 'Noto Serif TC', serif; font-size: .93rem; color: var(--soft-ink); line-height: 2.2; margin-bottom: 1.4rem; letter-spacing: .03em; }
+    @media (max-width: 900px) { .exp-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -187,6 +201,7 @@
   <a href="#" class="nav-logo">Yü</a>
   <ul class="nav-links">
     <li><a href="#about">關於我</a></li>
+    <li><a href="#experience">經歷</a></li>
     <li><a href="#portfolio">作品集</a></li>
     <li><a href="#contact">聯絡</a></li>
   </ul>
@@ -233,9 +248,9 @@
   </div>
   <div class="about-content reveal">
     <div class="section-label">關於我</div>
-    <h2>一眼一瞬間</h2>
-    <p>我是 Yü，從事攝影與平面設計創作。相機和設計軟體對我來說都是工具，讓我把腦海中的畫面變成能被看見的東西。</p>
-    <p>無論是按下快門的一瞬間，還是精心排列的版面，我在意的始終是那份被傳遞出去的感受。</p>
+    <h2>用設計說故事</h2>
+    <p>我是 Yü，擁有平面設計、攝影、影像剪輯及 AI 工具整合經驗的視覺設計工作者。</p>
+    <p>擅長將創意構想快速轉化為具商業價值的視覺內容，從企劃、拍攝到設計執行皆能獨立完成。重視效率與品質，持續透過新工具與新技術提升產出效能，協助品牌以更具吸引力的方式與受眾溝通。</p>
     <div class="skills-row">
       <span class="skill-tag">攝影</span>
       <span class="skill-tag">平面設計</span>
@@ -309,6 +324,65 @@
 
   <div class="upload-guide reveal">
     <p>📸 這些位置預留給你的照片與設計作品<br/><strong>下一步</strong>會教你如何把自己的作品替換進來，以及幫每件作品加上標題</p>
+  </div>
+</section>
+
+<!-- Experience -->
+<section class="experience" id="experience">
+  <div class="reveal">
+    <div class="section-label">經歷</div>
+  </div>
+  <div class="exp-grid reveal">
+    <div class="exp-card">
+      <div class="exp-title">設計美編</div>
+      <div class="exp-sub">平面設計 / 攝影 / 視覺製作</div>
+      <ul class="exp-list">
+        <li>負責品牌相關平面設計（海報、社群素材、商品圖等）</li>
+        <li>執行商品攝影與人像拍攝，提升整體視覺質感</li>
+        <li>協助品牌建立一致視覺風格，提升內容辨識度</li>
+      </ul>
+    </div>
+    <div class="exp-card">
+      <div class="exp-title">電商設計人員</div>
+      <div class="exp-sub">設計 × 電商營運</div>
+      <ul class="exp-list">
+        <li>負責商品圖片設計與上架素材製作</li>
+        <li>協助商品品項整理、進出貨流程管理</li>
+        <li>優化商品呈現方式，提高商品吸引力與轉換率</li>
+      </ul>
+    </div>
+    <div class="exp-card">
+      <div class="exp-title">社群小編</div>
+      <div class="exp-sub">內容經營 / 趨勢操作</div>
+      <ul class="exp-list">
+        <li>經營社群平台（IG / LINE），規劃貼文與主題內容</li>
+        <li>即時跟進時事趨勢，提高貼文互動性</li>
+        <li>協助品牌建立基礎社群形象</li>
+      </ul>
+    </div>
+    <div class="exp-card">
+      <div class="exp-title">婚攝助理</div>
+      <div class="exp-sub">現場執行 / 團隊協作</div>
+      <ul class="exp-list">
+        <li>協助攝影師完成婚禮拍攝流程</li>
+        <li>負責模特服裝、道具安排與現場支援</li>
+        <li>培養臨場反應能力與細節控管能力</li>
+      </ul>
+    </div>
+    <div class="exp-card">
+      <div class="exp-title">飲料店副店長</div>
+      <div class="exp-sub">管理 / 溝通 / 執行力</div>
+      <ul class="exp-list">
+        <li>協助門市營運與人員管理</li>
+        <li>負責排班、人事協調與現場狀況處理</li>
+        <li>培養高度責任感與團隊合作能力</li>
+      </ul>
+    </div>
+  </div>
+  <div class="exp-closing reveal">
+    <p>攝影與設計是我持續投入的方向。從最初自學攝影與後製，到實際參與設計與電商相關工作，我逐漸累積影像與視覺整合能力，也更理解市場對內容品質與效率的要求。</p>
+    <p>面對數位與AI快速發展的趨勢，我也持續學習新工具，提升製作效率與創意發想能力，讓自己能同時具備設計力與內容產出能力。</p>
+    <p>未來期望朝「視覺設計 × 影像內容」方向發展，將設計、攝影與社群整合應用，為品牌創造更具吸引力與價值的視覺內容。</p>
   </div>
 </section>
 
