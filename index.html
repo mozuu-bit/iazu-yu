@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yü — 作品集</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+TC:wght@300;400&family=Zen+Kaku+Gothic+New:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --mist: #eef2f7;
+      --cloud: #f7f9fc;
+      --ink: #2b3340;
+      --soft-ink: #4a5568;
+      --warm-gray: #8d9aaa;
+      --accent: #7ba3c8;
+      --accent-light: #b8d0e8;
+      --accent-pale: #ddeaf5;
+      --light-line: rgba(100,130,160,0.15);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cloud);
+      color: var(--ink);
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 300;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* subtle grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: .4;
+    }
+
+    /* Cursor */
+    .cursor { position: fixed; width: 7px; height: 7px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .3s, height .3s, background .3s; }
+    .cursor-ring { position: fixed; width: 34px; height: 34px; border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all .2s ease; opacity: .45; }
+
+    /* Nav */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; display: flex; justify-content: space-between; align-items: center; padding: 2rem 4.5rem; background: rgba(247,249,252,0.82); backdrop-filter: blur(14px); border-bottom: 1px solid var(--light-line); }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; font-weight: 300; letter-spacing: .22em; color: var(--ink); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .72rem; letter-spacing: .18em; color: var(--warm-gray); text-decoration: none; transition: color .3s; }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* Hero */
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
+    .hero-bg-wash { position: absolute; right: 0; top: 0; width: 50%; height: 100%; background: linear-gradient(160deg, #ddeaf5 0%, #c5dbee 60%, #aecce3 100%); z-index: 0; }
+    .hero-bg-wash::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 60% 40%, rgba(255,255,255,.45) 0%, transparent 70%); }
+    /* floating circles */
+    .hero-circle { position: absolute; border-radius: 50%; pointer-events: none; }
+    .hero-circle-1 { width: 320px; height: 320px; right: 12%; top: 15%; background: rgba(255,255,255,.22); animation: drift 8s ease-in-out infinite; }
+    .hero-circle-2 { width: 160px; height: 160px; right: 38%; top: 55%; background: rgba(185,215,238,.35); animation: drift 11s ease-in-out infinite reverse; }
+    .hero-circle-3 { width: 80px; height: 80px; right: 20%; bottom: 18%; background: rgba(255,255,255,.3); animation: drift 7s ease-in-out infinite 2s; }
+
+    .hero-text { display: flex; flex-direction: column; justify-content: center; padding: 8rem 4.5rem 5rem; position: relative; z-index: 2; }
+    .hero-eyebrow { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .68rem; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); margin-bottom: 2rem; opacity: 0; animation: fadeUp 1s .3s forwards; }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.8rem,6vw,6.5rem); font-weight: 300; line-height: 1.05; margin-bottom: .6rem; opacity: 0; animation: fadeUp 1s .5s forwards; color: var(--ink); }
+    .hero-title em { font-style: italic; color: var(--accent); }
+    .hero-tagline { font-family: 'Noto Serif TC', serif; font-size: 1.05rem; color: var(--warm-gray); line-height: 2; margin-top: 1.8rem; max-width: 300px; opacity: 0; animation: fadeUp 1s .7s forwards; letter-spacing: .05em; }
+    .hero-tags { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 2.2rem; opacity: 0; animation: fadeUp 1s .9s forwards; }
+    .hero-tag { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .62rem; letter-spacing: .14em; padding: .3rem .85rem; border: 1px solid var(--accent-light); color: var(--accent); background: var(--accent-pale); }
+
+    .hero-image-side { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; }
+    .photo-stack { position: relative; width: 320px; height: 400px; }
+    .pcard { position: absolute; background: white; padding: 10px 10px 32px; box-shadow: 0 12px 40px rgba(100,140,180,.18); }
+    .pcard:nth-child(1) { width: 210px; height: 270px; top: 0; left: 10px; transform: rotate(-3.5deg); opacity: 0; animation: fadeUp 1s 1s forwards; }
+    .pcard:nth-child(2) { width: 175px; height: 235px; top: 80px; right: 0; transform: rotate(2.5deg); opacity: 0; animation: fadeUp 1s 1.15s forwards; }
+    .pcard:nth-child(3) { width: 145px; height: 195px; bottom: 0; left: 30px; transform: rotate(-1.5deg); opacity: 0; animation: fadeUp 1s 1.3s forwards; }
+    .pcard-inner { width: 100%; height: calc(100% - 22px); display: flex; align-items: center; justify-content: center; font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .6rem; letter-spacing: .13em; color: rgba(100,130,160,.5); text-transform: uppercase; }
+    .pcard:nth-child(1) .pcard-inner { background: linear-gradient(145deg, #ddeaf5, #c0d8ee); }
+    .pcard:nth-child(2) .pcard-inner { background: linear-gradient(145deg, #cce0f0, #a8c8e0); }
+    .pcard:nth-child(3) .pcard-inner { background: linear-gradient(145deg, #e8f2fa, #cce0f0); }
+
+    .hero-scroll { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: .5rem; opacity: 0; animation: fadeUp 1s 1.6s forwards; z-index: 10; }
+    .scroll-label { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .6rem; letter-spacing: .22em; text-transform: uppercase; color: var(--warm-gray); }
+    .scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, var(--accent-light), transparent); animation: scrollPulse 2.2s infinite; }
+
+    /* Section */
+    section { padding: 8rem 4.5rem; }
+    .section-label { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .66rem; letter-spacing: .28em; text-transform: uppercase; color: var(--accent); margin-bottom: 2.8rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--accent-light); }
+
+    /* About */
+    .about { display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: center; border-top: 1px solid var(--light-line); background: linear-gradient(180deg, var(--cloud) 0%, var(--mist) 100%); }
+    .about-visual { position: relative; height: 480px; }
+    .about-img-main { position: absolute; right: 0; top: 0; width: 78%; height: 82%; background: linear-gradient(160deg, #c8def0, #9dc0db); }
+    .about-img-accent { position: absolute; left: 0; bottom: 0; width: 42%; height: 42%; background: white; padding: 10px 10px 32px; box-shadow: 0 8px 30px rgba(100,140,180,.15); }
+    .about-img-accent-inner { width: 100%; height: calc(100% - 22px); background: linear-gradient(160deg, #7ba3c8, #4a7fa8); }
+    .about-bg-num { position: absolute; left: -1rem; top: 50%; transform: translateY(-50%) rotate(-90deg); font-family: 'Cormorant Garamond', serif; font-size: 6rem; color: var(--light-line); white-space: nowrap; pointer-events: none; letter-spacing: -.02em; }
+    .about-content h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,3.2vw,2.8rem); font-weight: 300; line-height: 1.35; margin-bottom: 2rem; }
+    .about-content h2 em { font-style: italic; color: var(--accent); }
+    .about-content p { color: var(--soft-ink); line-height: 2.1; margin-bottom: 1.4rem; font-size: .93rem; letter-spacing: .03em; }
+    .skills-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
+    .skill-tag { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .62rem; letter-spacing: .12em; padding: .28rem .7rem; border: 1px solid var(--accent-light); color: var(--accent); background: var(--accent-pale); }
+    .ig-link { display: inline-flex; align-items: center; gap: .55rem; margin-top: 1.8rem; font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-light); padding-bottom: 3px; transition: all .3s; }
+    .ig-link:hover { border-color: var(--accent); color: var(--ink); }
+    .social-row { display: flex; align-items: baseline; gap: 1rem; margin-top: 1.2rem; flex-wrap: wrap; }
+    .social-row .ig-link { margin-top: 0; }
+    .social-desc { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .72rem; color: var(--warm-gray); letter-spacing: .04em; }
+
+    /* Portfolio */
+    .portfolio { border-top: 1px solid var(--light-line); }
+    .portfolio-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; }
+    .portfolio-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,3.2vw,2.8rem); font-weight: 300; }
+
+    /* Filter */
+    .filter-tabs { display: flex; gap: 0; margin-bottom: 3rem; border-bottom: 1px solid var(--light-line); }
+    .filter-btn { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; padding: .7rem 1.4rem; background: none; border: none; color: var(--warm-gray); cursor: none; position: relative; transition: color .3s; }
+    .filter-btn::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px; background: var(--accent); transform: scaleX(0); transition: transform .3s; }
+    .filter-btn.active { color: var(--accent); }
+    .filter-btn.active::after { transform: scaleX(1); }
+    .filter-btn:hover { color: var(--accent); }
+
+    /* Masonry */
+    .portfolio-grid { columns: 3; column-gap: 1rem; }
+    .work-item { break-inside: avoid; margin-bottom: 1rem; position: relative; overflow: hidden; display: block; }
+    .work-bg { width: 100%; display: block; transition: transform .8s cubic-bezier(.25,.46,.45,.94); }
+    .work-item:hover .work-bg { transform: scale(1.04); }
+    .work-overlay { position: absolute; inset: 0; background: rgba(43,51,64,0); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.2rem; transition: background .4s; }
+    .work-item:hover .work-overlay { background: rgba(43,51,64,.5); }
+    .work-info { opacity: 0; transform: translateY(8px); transition: all .4s; }
+    .work-item:hover .work-info { opacity: 1; transform: translateY(0); }
+    .work-cat { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .6rem; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-light); margin-bottom: .3rem; }
+    .work-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: white; font-weight: 300; }
+    .work-placeholder { width: 100%; display: flex; align-items: center; justify-content: center; font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.35); }
+
+    /* Upload guide */
+    .upload-guide { margin-top: 2.5rem; border: 1px dashed var(--light-line); padding: 2rem; text-align: center; background: var(--mist); }
+    .upload-guide p { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .78rem; letter-spacing: .06em; color: var(--warm-gray); line-height: 2.2; }
+    .upload-guide strong { color: var(--accent); }
+
+    /* Contact */
+    .contact { border-top: 1px solid var(--light-line); display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; background: linear-gradient(180deg, var(--mist) 0%, var(--cloud) 100%); }
+    .contact-text h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem,4vw,4rem); font-weight: 300; line-height: 1.2; margin-bottom: 1.5rem; }
+    .contact-text h2 em { font-style: italic; color: var(--accent); }
+    .contact-text p { color: var(--soft-ink); line-height: 2.1; font-size: .93rem; letter-spacing: .03em; }
+    .contact-links { display: flex; flex-direction: column; gap: 2rem; }
+    .contact-item { display: flex; flex-direction: column; gap: .35rem; text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--light-line); padding-bottom: 2rem; transition: border-color .3s; }
+    .contact-item:hover { border-color: var(--accent); }
+    .contact-item-label { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .63rem; letter-spacing: .22em; text-transform: uppercase; color: var(--warm-gray); }
+    .contact-item-value { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 300; transition: color .3s; }
+    .contact-item:hover .contact-item-value { color: var(--accent); }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--light-line); padding: 2.5rem 4.5rem; display: flex; justify-content: space-between; align-items: center; background: var(--mist); }
+    footer p { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .68rem; letter-spacing: .12em; color: var(--warm-gray); }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; letter-spacing: .22em; color: var(--ink); }
+
+    /* Animations */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes drift { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-18px) scale(1.03); } }
+    @keyframes scrollPulse { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s ease, transform .9s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.4rem 2rem; }
+      .nav-links { display: none; }
+      section { padding: 5rem 2rem; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-image-side { display: none; }
+      .hero-text { padding: 7rem 2rem 5rem; }
+      .about { grid-template-columns: 1fr; gap: 3rem; }
+      .about-visual { height: 280px; }
+      .portfolio-grid { columns: 2; }
+      .contact { grid-template-columns: 1fr; gap: 3rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+    @media (max-width: 560px) { .portfolio-grid { columns: 1; } }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Nav -->
+<nav>
+  <a href="#" class="nav-logo">Yü</a>
+  <ul class="nav-links">
+    <li><a href="#about">關於我</a></li>
+    <li><a href="#portfolio">作品集</a></li>
+    <li><a href="#contact">聯絡</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg-wash"></div>
+  <div class="hero-circle hero-circle-1"></div>
+  <div class="hero-circle hero-circle-2"></div>
+  <div class="hero-circle hero-circle-3"></div>
+
+  <div class="hero-text">
+    <p class="hero-eyebrow">Photography · Graphic Design · 影像創作</p>
+    <h1 class="hero-title">Yü <em>Designer</em></h1>
+    <p class="hero-tagline">把美好定格在這一瞬間</p>
+    <div class="hero-tags">
+      <span class="hero-tag">攝影</span>
+      <span class="hero-tag">平面設計</span>
+      <span class="hero-tag">影像創作</span>
+    </div>
+  </div>
+
+  <div class="hero-image-side">
+    <div class="photo-stack">
+      <div class="pcard"><div class="pcard-inner">Photo</div></div>
+      <div class="pcard"><div class="pcard-inner">Design</div></div>
+      <div class="pcard"><div class="pcard-inner">Work</div></div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span class="scroll-label">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- About -->
+<section class="about" id="about">
+  <div class="about-visual reveal">
+    <div class="about-bg-num">2026</div>
+    <div class="about-img-main"></div>
+    <div class="about-img-accent"><div class="about-img-accent-inner"></div></div>
+  </div>
+  <div class="about-content reveal">
+    <div class="section-label">關於我</div>
+    <h2>一眼一瞬間</h2>
+    <p>我是 Yü，從事攝影與平面設計創作。相機和設計軟體對我來說都是工具，讓我把腦海中的畫面變成能被看見的東西。</p>
+    <p>無論是按下快門的一瞬間，還是精心排列的版面，我在意的始終是那份被傳遞出去的感受。</p>
+    <div class="skills-row">
+      <span class="skill-tag">攝影</span>
+      <span class="skill-tag">平面設計</span>
+      <span class="skill-tag">海報設計</span>
+      <span class="skill-tag">影像後製</span>
+    </div>
+    <div class="social-row">
+      <a href="https://www.instagram.com/iazu_yu/" target="_blank" class="ig-link">Instagram @iazu_yu →</a>
+      <span class="social-desc">攝影，風格偏日系清新</span>
+    </div>
+    <div class="social-row">
+      <a href="https://www.threads.com/@iazu_yu" target="_blank" class="ig-link">Threads @iazu_yu →</a>
+      <span class="social-desc">AI創作（圖＋文）</span>
+    </div>
+    <div class="social-row">
+      <a href="https://www.flickr.com/photos/138131258@N03/" target="_blank" class="ig-link">Flickr iazu_yu →</a>
+      <span class="social-desc">攝影，畫質高無PS或Ai調整</span>
+    </div>
+  </div>
+</section>
+
+<!-- Portfolio -->
+<section class="portfolio" id="portfolio">
+  <div class="portfolio-header reveal">
+    <div>
+      <div class="section-label">作品集</div>
+
+    </div>
+  </div>
+
+  <div class="filter-tabs reveal">
+    <button class="filter-btn active" data-filter="all">全部</button>
+    <button class="filter-btn" data-filter="photo">攝影</button>
+    <button class="filter-btn" data-filter="graphic">平面設計</button>
+  </div>
+
+  <div class="portfolio-grid reveal" id="portfolioGrid">
+    <div class="work-item" data-category="photo">
+      <img class="work-bg" src="https://photos.fife.usercontent.google.com/pw/AP1GczPkWRskWf_wy1vd6A01OQcWSeZsUR1xP4XY9X5XtScKq7oCknxgTno7=w1123-h749-s-no-gm?authuser=0" alt="sakura" style="width:100%;height:280px;object-fit:cover;display:block;"/>
+      <div class="work-overlay"><div class="work-info"><div class="work-cat">攝影</div><div class="work-name">sakura</div></div></div>
+    </div>
+    <div class="work-item" data-category="photo">
+      <div class="work-bg work-placeholder" style="height:380px;background:linear-gradient(160deg,#a8c8e0,#78a8c8);">放上你的照片</div>
+      <div class="work-overlay"><div class="work-info"><div class="work-cat">攝影</div><div class="work-name">作品標題</div></div></div>
+    </div>
+    <div class="work-item" data-category="photo">
+      <div class="work-bg work-placeholder" style="height:320px;background:linear-gradient(170deg,#b8d0e8,#88b0d0);">放上你的照片</div>
+      <div class="work-overlay"><div class="work-info"><div class="work-cat">攝影</div><div class="work-name">作品標題</div></div></div>
+    </div>
+    <div class="work-item" data-category="photo">
+      <div class="work-bg work-placeholder" style="height:240px;background:linear-gradient(140deg,#cce0f0,#98c0d8);">放上你的照片</div>
+      <div class="work-overlay"><div class="work-info"><div class="work-cat">攝影</div><div class="work-name">作品標題</div></div></div>
+    </div>
+    <div class="work-item" data-category="graphic">
+      <div class="work-bg work-placeholder" style="height:340px;background:linear-gradient(160deg,#4a7fa8,#2a5f88);">放上你的作品</div>
+      <div class="work-overlay"><div class="work-info"><div class="work-cat">平面設計</div><div class="work-name">作品標題</div></div></div>
+    </div>
+    <div class="work-item" data-category="graphic">
+      <div class="work-bg work-placeholder" style="height:260px;background:linear-gradient(130deg,#5a8fb8,#3a6f98);">放上你的作品</div>
+      <div class="work-overlay"><div class="work-info"><div class="work-cat">平面設計</div><div class="work-name">作品標題</div></div></div>
+    </div>
+    <div class="work-item" data-category="graphic">
+      <div class="work-bg work-placeholder" style="height:400px;background:linear-gradient(150deg,#6898c0,#4878a0);">放上你的作品</div>
+      <div class="work-overlay"><div class="work-info"><div class="work-cat">平面設計</div><div class="work-name">作品標題</div></div></div>
+    </div>
+    <div class="work-item" data-category="graphic">
+      <div class="work-bg work-placeholder" style="height:300px;background:linear-gradient(170deg,#7baac8,#4a88b0);">放上你的作品</div>
+      <div class="work-overlay"><div class="work-info"><div class="work-cat">平面設計</div><div class="work-name">作品標題</div></div></div>
+    </div>
+  </div>
+
+  <div class="upload-guide reveal">
+    <p>📸 這些位置預留給你的照片與設計作品<br/><strong>下一步</strong>會教你如何把自己的作品替換進來，以及幫每件作品加上標題</p>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+  <div class="contact-text reveal">
+    <div class="section-label">聯絡</div>
+
+    <p>無論是設計委託、攝影合作等<br/>都歡迎與我聯繫(⁰▿⁰)<br/>感謝您看到最後。</p>
+  </div>
+  <div class="contact-links reveal">
+    <a href="mailto:stars122111@gmail.com" class="contact-item">
+      <span class="contact-item-label">Email</span>
+      <span class="contact-item-value">stars122111@gmail.com</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">Yü</span>
+  <p>© 2026 Yü · 把美好定格在這一瞬間</p>
+  <p>All rights reserved.</p>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+  (function animate() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animate);
+  })();
+  document.querySelectorAll('a, button, .work-item').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.width = '13px'; cursor.style.height = '13px'; ring.style.width = '50px'; ring.style.height = '50px'; ring.style.opacity = '.7'; });
+    el.addEventListener('mouseleave', () => { cursor.style.width = '7px'; cursor.style.height = '7px'; ring.style.width = '34px'; ring.style.height = '34px'; ring.style.opacity = '.45'; });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Filter
+  const btns = document.querySelectorAll('.filter-btn');
+  const items = document.querySelectorAll('.work-item');
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      items.forEach(item => {
+        const match = filter === 'all' || item.dataset.category === filter;
+        item.style.opacity = match ? '1' : '0';
+        item.style.pointerEvents = match ? 'auto' : 'none';
+        item.style.position = match ? 'relative' : 'absolute';
+        item.style.visibility = match ? 'visible' : 'hidden';
+      });
+    });
+  });
+</script>
+</body>
+</html>
