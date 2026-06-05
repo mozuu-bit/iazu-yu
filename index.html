@@ -122,7 +122,7 @@
     /* Masonry */
     .portfolio-grid { columns: 3; column-gap: 1rem; }
     .work-item { break-inside: avoid; margin-bottom: 1rem; position: relative; overflow: hidden; display: block; }
-    .work-bg { width: 100%; display: block; transition: transform .8s cubic-bezier(.25,.46,.45,.94); }
+    .work-bg { width: 100%; height: auto; display: block; transition: transform .8s cubic-bezier(.25,.46,.45,.94); }
     .work-item:hover .work-bg { transform: scale(1.04); }
     .work-overlay { position: absolute; inset: 0; background: rgba(43,51,64,0); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.2rem; transition: background .4s; }
     .work-item:hover .work-overlay { background: rgba(43,51,64,.5); }
@@ -136,6 +136,11 @@
     .upload-guide { margin-top: 2.5rem; border: 1px dashed var(--light-line); padding: 2rem; text-align: center; background: var(--mist); }
     .upload-guide p { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .78rem; letter-spacing: .06em; color: var(--warm-gray); line-height: 2.2; }
     .upload-guide strong { color: var(--accent); }
+    /* Load More */
+    .load-more-wrap { text-align: center; margin-top: 2.5rem; }
+    .load-more-btn { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .9rem; letter-spacing: .18em; padding: .8rem 2.5rem; background: none; border: 1px solid var(--accent-light); color: var(--accent); cursor: none; transition: all .3s; }
+    .load-more-btn:hover { background: var(--accent-pale); border-color: var(--accent); }
+    .load-more-btn.hidden { display: none; }
 
     /* Contact */
     .contact { border-top: 1px solid var(--light-line); display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; background: linear-gradient(180deg, var(--mist) 0%, var(--cloud) 100%); }
@@ -284,6 +289,7 @@
     <button class="filter-btn" data-filter="photo">攝影</button>
     <button class="filter-btn" data-filter="graphic">平面</button>
     <button class="filter-btn" data-filter="ai">Ai</button>
+    <button class="filter-btn" data-filter="other">其他</button>
   </div>
 
   <div class="portfolio-grid reveal" id="portfolioGrid">
@@ -320,21 +326,25 @@
       <div class="work-overlay"><div class="work-info"><div class="work-cat">平面設計</div><div class="work-name">作品標題</div></div></div>
     </div>
     <div class="work-item" data-category="ai">
-      <img class="work-bg" src="ai-work-03.jpg" alt="AI Work 03" style="width:100%;display:block;object-fit:cover;"/>
+      <img class="work-bg" src="ai-work-03.jpg" alt="AI Work 03" style="width:100%;height:auto;display:block;"/>
       <div class="work-overlay"><div class="work-info"><div class="work-cat">Ai</div><div class="work-name"></div></div></div>
     </div>
     <div class="work-item" data-category="ai">
-      <img class="work-bg" src="ai-work-04.jpg" alt="AI Work 04" style="width:100%;display:block;object-fit:cover;"/>
+      <img class="work-bg" src="ai-work-04.jpg" alt="AI Work 04" style="width:100%;height:auto;display:block;"/>
       <div class="work-overlay"><div class="work-info"><div class="work-cat">Ai</div><div class="work-name"></div></div></div>
     </div>
     <div class="work-item" data-category="ai">
-      <img class="work-bg" src="ai-work-05.jpg" alt="AI Work 05" style="width:100%;display:block;object-fit:cover;"/>
+      <img class="work-bg" src="ai-work-05.jpg" alt="AI Work 05" style="width:100%;height:auto;display:block;"/>
       <div class="work-overlay"><div class="work-info"><div class="work-cat">Ai</div><div class="work-name"></div></div></div>
     </div>
   </div>
 
+  <div class="load-more-wrap">
+    <button class="load-more-btn" id="loadMoreBtn">顯示更多</button>
+  </div>
+
   <div class="portfolio-banner reveal" style="margin-top:3rem;">
-    <img src="Portfolio-Bottom-Banner.jpg" alt="Portfolio Banner" style="width:100%;display:block;object-fit:cover;"/>
+    <img src="Portfolio-Bottom-Banner.jpg" alt="Portfolio Banner" style="width:100%;height:auto;display:block;"/>
   </div>
 </section>
 
@@ -447,23 +457,68 @@
   }, { threshold: 0.08 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // Filter
+  // Filter + Load More
+  const SHOW = 6;
   const btns = document.querySelectorAll('.filter-btn');
-  const items = document.querySelectorAll('.work-item');
+  const allItems = document.querySelectorAll('.work-item');
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+  function applyFilter(filter) {
+    const matched = Array.from(allItems).filter(item =>
+      filter === 'all' || item.dataset.category === filter
+    );
+    const hidden = Array.from(allItems).filter(item =>
+      filter !== 'all' && item.dataset.category !== filter
+    );
+
+    // Hide non-matching
+    hidden.forEach(item => {
+      item.style.opacity = '0';
+      item.style.pointerEvents = 'none';
+      item.style.position = 'absolute';
+      item.style.visibility = 'hidden';
+    });
+
+    // Show matching, limit to SHOW
+    matched.forEach((item, i) => {
+      const show = i < SHOW;
+      item.style.opacity = show ? '1' : '0';
+      item.style.pointerEvents = show ? 'auto' : 'none';
+      item.style.position = show ? 'relative' : 'absolute';
+      item.style.visibility = show ? 'visible' : 'hidden';
+    });
+
+    // Show/hide load more button
+    loadMoreBtn.classList.toggle('hidden', matched.length <= SHOW);
+    loadMoreBtn.dataset.filter = filter;
+    loadMoreBtn.dataset.shown = SHOW;
+  }
+
   btns.forEach(btn => {
     btn.addEventListener('click', () => {
       btns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      items.forEach(item => {
-        const match = filter === 'all' || item.dataset.category === filter;
-        item.style.opacity = match ? '1' : '0';
-        item.style.pointerEvents = match ? 'auto' : 'none';
-        item.style.position = match ? 'relative' : 'absolute';
-        item.style.visibility = match ? 'visible' : 'hidden';
-      });
+      applyFilter(btn.dataset.filter);
     });
   });
+
+  loadMoreBtn.addEventListener('click', () => {
+    const filter = loadMoreBtn.dataset.filter;
+    const shown = parseInt(loadMoreBtn.dataset.shown);
+    const matched = Array.from(allItems).filter(item =>
+      filter === 'all' || item.dataset.category === filter
+    );
+    matched.forEach((item, i) => {
+      item.style.opacity = '1';
+      item.style.pointerEvents = 'auto';
+      item.style.position = 'relative';
+      item.style.visibility = 'visible';
+    });
+    loadMoreBtn.classList.add('hidden');
+  });
+
+  // Init
+  applyFilter('all');
 </script>
 </body>
 </html>
