@@ -194,6 +194,40 @@
     .exp-closing { border-top: 1px solid var(--light-line); padding-top: 3rem; }
     .exp-closing p { font-family: 'Noto Serif TC', serif; font-size: 1.05rem; font-weight: 500; color: var(--soft-ink); line-height: 2.2; margin-bottom: 1.4rem; letter-spacing: .03em; }
     @media (max-width: 900px) { .exp-grid { grid-template-columns: 1fr; } }
+
+    /* Tools label */
+    .tools-label { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .85rem; color: var(--warm-gray); letter-spacing: .1em; margin-bottom: .8rem; margin-top: 1.8rem; }
+
+    /* Lightbox */
+    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 9000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .lightbox.active { opacity: 1; pointer-events: auto; }
+    .lightbox img, .lightbox video { max-width: 90vw; max-height: 90vh; object-fit: contain; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+    .lightbox-close { position: absolute; top: 1.5rem; right: 2rem; color: white; font-size: 2rem; cursor: pointer; font-family: 'Lato', sans-serif; font-weight: 300; opacity: .7; transition: opacity .2s; }
+    .lightbox-close:hover { opacity: 1; }
+    .lightbox-prev, .lightbox-next { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 2rem; cursor: pointer; opacity: .6; transition: opacity .2s; padding: 1rem; font-family: 'Lato', sans-serif; }
+    .lightbox-prev { left: 1rem; }
+    .lightbox-next { right: 1rem; }
+    .lightbox-prev:hover, .lightbox-next:hover { opacity: 1; }
+
+    /* Back to top */
+    .back-to-top { position: fixed; bottom: 2.5rem; right: 2.5rem; width: 44px; height: 44px; background: var(--accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s, background .3s; z-index: 500; }
+    .back-to-top.visible { opacity: 1; pointer-events: auto; }
+    .back-to-top:hover { background: var(--ink); }
+    .back-to-top svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
+
+    /* Contact form */
+    .contact-form-section { border-top: 1px solid var(--light-line); padding: 6rem 4.5rem; background: var(--mist); }
+    .contact-form { max-width: 700px; margin: 0 auto; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .form-group { display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1.5rem; }
+    .form-row .form-group { margin-bottom: 0; }
+    .form-label { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .78rem; letter-spacing: .12em; color: var(--warm-gray); }
+    .form-input { font-family: 'Noto Serif TC', serif; font-size: .95rem; color: var(--ink); background: white; border: 1px solid var(--light-line); padding: .9rem 1.1rem; outline: none; transition: border-color .3s; width: 100%; }
+    .form-input:focus { border-color: var(--accent); }
+    .form-textarea { min-height: 160px; resize: vertical; }
+    .form-submit { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .9rem; letter-spacing: .18em; padding: .9rem 3rem; background: var(--accent); border: none; color: white; cursor: pointer; transition: background .3s; margin-top: .5rem; }
+    .form-submit:hover { background: var(--ink); }
+    @media (max-width: 900px) { .form-row { grid-template-columns: 1fr; } .contact-form-section { padding: 4rem 2rem; } }
   </style>
 </head>
 <body>
@@ -254,11 +288,12 @@
     <div class="section-label">關於我</div>
     <h2>用設計說故事</h2>
     <p>我是 Yü，具備平面設計、攝影、影像製作及 AI 工具整合能力的視覺創作者。擅長從企劃發想、拍攝執行到設計產出的一站式內容製作，並擁有電商直播企劃、設備架設與現場執行經驗。重視美感與效率，持續透過創新工具優化工作流程，為品牌創造兼具創意與商業價值的視覺內容。</p>
+    <div class="tools-label">個人技能</div>
     <div class="skills-row">
-      <span class="skill-tag">攝影</span>
-      <span class="skill-tag">平面設計</span>
-      <span class="skill-tag">海報設計</span>
-      <span class="skill-tag">影像後製</span>
+      <span class="skill-tag">Photoshop</span>
+      <span class="skill-tag">Lightroom</span>
+      <span class="skill-tag">Illustrator</span>
+      <span class="skill-tag">Premiere</span>
     </div>
     <div class="social-row">
       <a href="https://www.instagram.com/iazu_yu/" target="_blank" class="ig-link">Instagram @iazu_yu →</a>
@@ -572,7 +607,6 @@
 <section class="contact" id="contact">
   <div class="contact-text reveal">
     <div class="section-label">聯絡</div>
-
     <p>無論是設計委託、攝影合作等<br/>都歡迎與我聯繫(⁰▿⁰)<br/>感謝您看到最後。</p>
   </div>
   <div class="contact-links reveal">
@@ -586,6 +620,41 @@
     </a>
   </div>
 </section>
+
+<!-- Contact Form -->
+<section class="contact-form-section reveal">
+  <div class="section-label">留言給我</div>
+  <form class="contact-form" action="https://formspree.io/f/xaqzoevn" method="POST">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">姓名</label>
+        <input type="text" name="name" class="form-input" placeholder="你的名字" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-input" placeholder="your@email.com" required/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">留言內容</label>
+      <textarea name="message" class="form-input form-textarea" placeholder="想說的話都可以寫在這裡..." required></textarea>
+    </div>
+    <button type="submit" class="form-submit">送出留言</button>
+  </form>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">✕</span>
+  <span class="lightbox-prev" id="lightboxPrev">‹</span>
+  <img id="lightboxImg" src="" alt="" style="display:none;"/>
+  <span class="lightbox-next" id="lightboxNext">›</span>
+</div>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
 
 <footer>
   <span class="footer-logo">Yü</span>
@@ -680,6 +749,64 @@
 
   // Init
   applyFilter('all');
+
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
+  let currentItems = [];
+  let currentIndex = 0;
+
+  function openLightbox(items, index) {
+    currentItems = items;
+    currentIndex = index;
+    showLightboxItem();
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function showLightboxItem() {
+    const item = currentItems[currentIndex];
+    const img = item.querySelector('img');
+    if (img) {
+      lightboxImg.src = img.src;
+      lightboxImg.style.display = 'block';
+    }
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+    lightboxImg.src = '';
+  }
+
+  document.querySelectorAll('.work-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const visibleItems = Array.from(document.querySelectorAll('.work-item')).filter(i => i.style.visibility !== 'hidden' && i.style.position !== 'absolute');
+      const index = visibleItems.indexOf(item);
+      if (item.querySelector('img')) openLightbox(visibleItems, index);
+    });
+  });
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  lightboxPrev.addEventListener('click', e => { e.stopPropagation(); currentIndex = (currentIndex - 1 + currentItems.length) % currentItems.length; showLightboxItem(); });
+  lightboxNext.addEventListener('click', e => { e.stopPropagation(); currentIndex = (currentIndex + 1) % currentItems.length; showLightboxItem(); });
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + currentItems.length) % currentItems.length; showLightboxItem(); }
+    if (e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % currentItems.length; showLightboxItem(); }
+  });
+
+  // Back to top
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    backToTop.classList.toggle('visible', window.scrollY > 500);
+  });
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 </script>
 </body>
 </html>
