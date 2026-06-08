@@ -195,6 +195,9 @@
     .exp-closing p { font-family: 'Noto Serif TC', serif; font-size: 1.05rem; font-weight: 500; color: var(--soft-ink); line-height: 2.2; margin-bottom: 1.4rem; letter-spacing: .03em; }
     @media (max-width: 900px) { .exp-grid { grid-template-columns: 1fr; } }
 
+    /* Image protection */
+    img { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
+
     /* Tools label */
     .tools-label { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: .85rem; color: var(--warm-gray); letter-spacing: .1em; margin-bottom: .8rem; margin-top: 1.8rem; }
 
@@ -807,6 +810,17 @@
     backToTop.classList.toggle('visible', window.scrollY > 500);
   });
   backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Image protection
+  document.addEventListener('contextmenu', e => {
+    if (e.target.tagName === 'IMG') e.preventDefault();
+  });
+  document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('dragstart', e => e.preventDefault());
+    img.style.webkitUserSelect = 'none';
+    img.style.userSelect = 'none';
+    img.setAttribute('draggable', 'false');
+  });
 </script>
 </body>
 </html>
