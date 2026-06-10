@@ -195,6 +195,12 @@
     .exp-closing p { font-family: 'Noto Serif TC', serif; font-size: 1.05rem; font-weight: 500; color: var(--soft-ink); line-height: 2.2; margin-bottom: 1.4rem; letter-spacing: .03em; }
     @media (max-width: 900px) { .exp-grid { grid-template-columns: 1fr; } }
 
+    /* Hero Slideshow */
+    .hero-slideshow { position: absolute; inset: 0; }
+    .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; }
+    .slide.active { opacity: 1; }
+    .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
     /* Image protection */
     img { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
 
@@ -268,10 +274,15 @@
   </div>
 
   <div class="hero-image-side">
-    <div class="photo-stack">
-      <div class="pcard"><div class="pcard-inner">Photo</div></div>
-      <div class="pcard"><div class="pcard-inner">Design</div></div>
-      <div class="pcard"><div class="pcard-inner">Work</div></div>
+    <div class="hero-slideshow">
+      <div class="slide active"><img src="photo-001.jpg" alt=""/></div>
+      <div class="slide"><img src="photo-010.jpg" alt=""/></div>
+      <div class="slide"><img src="photo-020.jpg" alt=""/></div>
+      <div class="slide"><img src="design-poster-07.jpg" alt=""/></div>
+      <div class="slide"><img src="design-poster-15.jpg" alt=""/></div>
+      <div class="slide"><img src="ai-work-1.jpg" alt=""/></div>
+      <div class="slide"><img src="ai-work-10.jpg" alt=""/></div>
+      <div class="slide"><img src="photo-035.jpg" alt=""/></div>
     </div>
   </div>
 
@@ -809,6 +820,15 @@
     backToTop.classList.toggle('visible', window.scrollY > 500);
   });
   backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Hero Slideshow
+  const slides = document.querySelectorAll('.slide');
+  let slideIndex = 0;
+  setInterval(() => {
+    slides[slideIndex].classList.remove('active');
+    slideIndex = (slideIndex + 1) % slides.length;
+    slides[slideIndex].classList.add('active');
+  }, 3500);
 
   // Image protection
   document.addEventListener('contextmenu', e => {
